@@ -1,101 +1,81 @@
-# Retail Pulse Backend API
+# **Retail Pulse Backend Assignment (TypeScript + Node.js)**  
 
-## 📌 Project Overview
-
-This project is a backend service for processing images collected from stores. It allows users to submit jobs containing image URLs and store IDs, processes the images asynchronously, and provides job status updates.
-
-## 🚀 Features
-
-- Submit a job with store images.
-- Asynchronous image processing.
-- Calculate the image perimeter.
-- Simulate GPU processing with a random delay (0.1 to 0.4 seconds).
-- Retrieve job status (ongoing, completed, or failed).
-- Data is fetched from a CSV file containing store details.
+This project is a backend service that processes store images by downloading them, calculating their perimeters, and simulating GPU processing time. The service also allows users to check the status of submitted jobs.
 
 ---
 
-## ⚙️ Tech Stack
+## **📌 Features**
 
-- **Node.js** (Backend runtime)
-- **Express.js** (Web framework)
-- **TypeScript** (Static typing)
-- **Axios** (HTTP requests)
-- **Sharp** (Image processing)
-- **csv-parser** (CSV file handling)
-- **Docker** (Optional containerization)
+✔ Accepts **job submissions** with image URLs and store IDs  
+✔ Processes images asynchronously, **calculating perimeters**  
+✔ Introduces a **random delay** (0.1 to 0.4 sec) for GPU simulation  
+✔ Retrieves **job status** (ongoing, completed, or failed)  
+✔ Loads **store data from a CSV file**  
 
 ---
 
-## 📂 Directory Structure
+## **📂 Project Structure**
 
-
+```yaml
 retail-pulse-backend/
 ├── src/
 │   ├── controllers/
-│   │   ├── jobController.ts
+│   │   ├── jobController.ts        # Handles API logic
 │   ├── services/
-│   │   ├── imageProcessor.ts
+│   │   ├── imageProcessor.ts       # Processes images
 │   ├── utils/
-│   │   ├── jobQueue.ts
-│   │   ├── csvLoader.ts
+│   │   ├── jobQueue.ts             # Job queue management
+│   │   ├── csvLoader.ts            # Loads store data from CSV
 │   ├── data/
-│   │   ├── stores.csv
-│   ├── routes.ts
-│   ├── server.ts
+│   │   ├── stores.csv              # CSV file with store data
+│   ├── routes.ts                   # Handles API routing (switch-case)
+│   ├── server.ts                   # Main Express server
 ├── docker/
-│   ├── Dockerfile
-│   ├── docker-compose.yml
-├── .env
-├── .gitignore
-├── package.json
-├── tsconfig.json
-├── README.md
-
+│   ├── Dockerfile                  # Docker setup
+│   ├── docker-compose.yml          # Docker Compose config
+├── .gitignore                       # Ignores unnecessary files
+├── package.json                     # Project dependencies
+├── tsconfig.json                     # TypeScript configuration
+├── README.md                        # Documentation
+```
 
 ---
 
-## 🛠️ Installation & Setup
+## **🚀 Setup & Installation**
 
-### **1️⃣ Clone the Repository**
+### **1️⃣ Install Dependencies**
 
-bash
-git clone https://github.com/your-repo/retail-pulse-backend.git
-cd retail-pulse-backend
-
-
-### **2️⃣ Install Dependencies**
-
-bash
+```sh
 npm install
+```
 
+### **2️⃣ Run the Server**
 
-### **3️⃣ Run the Server**
-
-bash
+```sh
 npx ts-node src/server.ts
+```
 
+### **3️⃣ Run Using Docker**
 
-- The server will start on `http://localhost:3000`
-
-### **(Optional) Run Using Docker**
-
-bash
+```sh
 docker-compose up --build
+```
 
+By default, the server runs on **`http://localhost:3000`**.
 
 ---
 
-## 🛠️ API Endpoints & Testing in Postman
+## **📌 API Endpoints**
 
-### **1️⃣ Submit a Job**
+### **1️⃣ Submit a Job (POST `/api/submit`)**
 
 - **Method:** `POST`
 - **URL:** `http://localhost:3000/api/submit`
 - **Headers:** `Content-Type: application/json`
+
 - **Body:**
 
-json
+```json
 {
    "count": 2,
    "visits": [
@@ -116,84 +96,94 @@ json
       }
    ]
 }
+```
 
+- **Response (201 Created)**:
 
-- **Expected Response:**
-
-json
+```json
 { "job_id": "123e4567-e89b-12d3-a456-426614174000" }
-
+```
 
 ---
 
-### **2️⃣ Get Job Status**
+### **2️⃣ Get Job Status (GET `/api/status`)**
 
 - **Method:** `GET`
 - **URL:** `http://localhost:3000/api/status?jobid=123e4567-e89b-12d3-a456-426614174000`
-- **Expected Responses:**
-  - If **ongoing**:
-    json
-    { "status": "ongoing", "job_id": "123e4567-e89b-12d3-a456-426614174000" }
-    
-  - If **completed**:
-    json
-    { "status": "completed", "job_id": "123e4567-e89b-12d3-a456-426614174000" }
-    
-  - If **failed**:
-    json
-    {
-        "status": "failed",
-        "job_id": "123e4567-e89b-12d3-a456-426614174000",
-        "error": [
-            { "store_id": "RP00001", "error": "Image download failed" }
-        ]
-    }
-    
-  - If **invalid job\_id**:
-    json
-    { "error": "Job not found" }
-    
+
+#### **Possible Responses**
+
+- **Ongoing Job**
+
+```json
+{ "status": "ongoing", "job_id": "123e4567-e89b-12d3-a456-426614174000" }
+```
+
+- **Completed Job**
+
+```json
+{ "status": "completed", "job_id": "123e4567-e89b-12d3-a456-426614174000" }
+```
+
+- **Failed Job**
+
+```json
+{
+    "status": "failed",
+    "job_id": "123e4567-e89b-12d3-a456-426614174000",
+    "error": [{ "store_id": "RP00001", "error": "Image download failed" }]
+}
+```
+
+- **Invalid Job ID**
+
+```json
+{ "error": "Job not found" }
+```
 
 ---
 
-## 🔍 Debugging & Troubleshooting
+## **🛠 Troubleshooting**
 
-### **Issue: Server Not Running**
+## **1️⃣ Server Not Running (`ECONNREFUSED 127.0.0.1:3000`)**
 
-- Ensure you ran:
-  bash
-  npx ts-node src/server.ts
-  
-- Check for errors in the logs.
-- If using Docker, run:
-  bash
-  docker-compose up --build
-  
+```sh
+npx ts-node src/server.ts
+```
 
-### **Issue: ****`ECONNREFUSED 127.0.0.1:3000`**** in Postman**
+If using **Docker**:
 
-- Ensure the server is running.
-- Check if `.env` specifies a different port (`PORT=5000`).
-- Try:
-  bash
-  kill -9 $(lsof -t -i:3000) # For Linux/macOS
-  
+```sh
+docker-compose up --build
+```
 
----
+## **2️⃣ Port Already in Use**
 
-## 🔮 Future Improvements
+```sh
+kill -9 $(lsof -t -i:3000)
+```
 
-- Use **Redis** for job queue persistence.
-- Store processed data in **MongoDB/PostgreSQL**.
-- Implement **WebSockets** for real-time job tracking.
-- Amazon S3 for image object store.
-- Add **unit tests** using Jest/Mocha.
+Then restart the server.
+
+## **3️⃣ Check Logs for Errors**
+
+Run:
+
+```sh
+npx ts-node src/server.ts
+```
 
 ---
 
-## 🎯 Conclusion
+## **📝 Future Improvements**
 
-This backend efficiently handles store image processing using **Node.js, Express, TypeScript, and CSV-based store data**. 🚀
+✔ Store jobs in **Redis** for better queue management  
+✔ Save processed data to **MongoDB/PostgreSQL**  
+✔ Implement **WebSockets** for real-time job updates  
+✔ Add **Unit Tests (Jest/Mocha)**  
 
-**Now, you can submit jobs and track their status using Postman!** 🎉
+---
 
+## **📜 License**
+
+This project is for **Retail Pulse Backend Intern Assignment** and is **open-source** for learning and improvement. 🚀  
