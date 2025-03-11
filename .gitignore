@@ -7,7 +7,7 @@ dist/
 *.tsbuildinfo
 
 # Environment variables
-.env
+# .env
 
 # Logs
 logs/
@@ -19,19 +19,8 @@ pnpm-debug.log*
 
 # IDE & Editor files
 .vscode/
-.idea/
-*.swp
-*.swo
 
 # Docker
 docker-compose.override.yml
 .dockerignore
 
-# OS-specific files
-.DS_Store
-Thumbs.db
-
-# Debugging
-*.log
-.nyc_output/
-coverage/
