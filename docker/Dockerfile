@@ -2,7 +2,7 @@
 FROM node:18
 
 # Set the working directory inside the container
-WORKDIR /docker
+WORKDIR /retail-pulse-backend
 
 # Copy package.json and package-lock.json
 COPY package.json package-lock.json ./
