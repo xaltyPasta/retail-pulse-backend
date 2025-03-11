@@ -11,7 +11,7 @@ COPY package.json package-lock.json ./
 RUN npm install
 
 # Copy the rest of the application files
-COPY . .
+COPY  ./retail-pulse-backend/ ./
 
 # Expose the application port
 EXPOSE 3000
