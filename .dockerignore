@@ -1,0 +1,15 @@
+# Node modules (already installed inside container)
+node_modules
+dist
+
+# Environment variables (security)
+.env
+
+# Git & Logs
+.git
+.gitignore
+logs
+
+# Docker-related files
+Dockerfile
+docker-compose.override.yml
